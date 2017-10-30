@@ -1,0 +1,24 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.example.repairman"
+    },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "com.example.repairman"
+    },
+    "call-number": {
+      "PACKAGE_NAME": "com.example.repairman"
+    },
+    "cordova-plugin-camera": {
+      "PACKAGE_NAME": "com.example.repairman"
+    }
+  },
+  "dependent_plugins": {}
+}

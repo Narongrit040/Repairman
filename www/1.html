@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/onsenui.css">
+    <link rel="stylesheet" href="css/onsen-css-components.min.css">
+    <script src="js/onsenui.min.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+  <script src="js/app.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.js"></script>
+
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script>
+window.fn = {};
+
+window.fn.open = function() {
+  var menu = document.getElementById('menu');
+  menu.open();
+};
+
+window.fn.load = function(page) {
+  var content = document.getElementById('content');
+  var menu = document.getElementById('menu');
+  content.load(page)
+    .then(menu.close.bind(menu));
+};
+
+function goBack() {
+    history.go(0);
+}
+</script>
+  </head>
+
+  <style>
+  body { padding: 2em; }
+
+
+/* Shared */
+.loginBtn {
+  box-sizing: border-box;
+  position: relative;
+  /* width: 13em;  - apply for fixed size */
+  margin: 0.2em;
+  padding: 0 15px 0 46px;
+  border: none;
+  text-align: left;
+  line-height: 34px;
+  white-space: nowrap;
+  border-radius: 0.2em;
+  font-size: 16px;
+  color: #FFF;
+}
+.loginBtn:before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 34px;
+  height: 100%;
+}
+.loginBtn:focus {
+  outline: none;
+}
+.loginBtn:active {
+  box-shadow: inset 0 0 0 32px rgba(0,0,0,0.1);
+}
+
+
+/* Facebook */
+.loginBtn--facebook {
+  background-color: #4C69BA;
+  background-image: linear-gradient(#4C69BA, #3B55A0);
+  /*font-family: "Helvetica neue", Helvetica Neue, Helvetica, Arial, sans-serif;*/
+  text-shadow: 0 -1px 0 #354C8C;
+}
+.loginBtn--facebook:before {
+  border-right: #364e92 1px solid;
+  background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_facebook.png') 6px 6px no-repeat;
+}
+.loginBtn--facebook:hover,
+.loginBtn--facebook:focus {
+  background-color: #5B7BD5;
+  background-image: linear-gradient(#5B7BD5, #4864B1);
+}
+
+
+/* Google */
+.loginBtn--google {
+  /*font-family: "Roboto", Roboto, arial, sans-serif;*/
+  background: #DD4B39;
+}
+.loginBtn--google:before {
+  border-right: #BB3F30 1px solid;
+  background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png') 6px 6px no-repeat;
+}
+.loginBtn--google:hover,
+.loginBtn--google:focus {
+  background: #E74B37;
+}
+/* page */
+.loginBtn--page {
+  /*font-family: "Roboto", Roboto, arial, sans-serif;*/
+  background: rgb(90, 221, 57);
+}
+.loginBtn--page {
+  /* border-right: rgb(99, 187, 48) 1px solid; */
+  /* background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png') 6px 6px no-repeat; */
+}
+.loginBtn--page:hover,
+.loginBtn--page:focus {
+  background: rgb(125, 231, 55);
+}
+
+  </style>
+<body >
+  
+      <ons-splitter >
+          <ons-splitter-side id="menu" side="right" width="220px" collapse >
+            <ons-page >
+              <ons-list>
+                <ons-list-item onclick="fn.load('home.html')" tappable>
+                  Home
+                </ons-list-item>
+
+                <ons-list-item onclick="fn.load('pageLogin.html')" tappable>
+                  Login
+                  </ons-list-item>
+                  <ons-list-item onclick="fn.load('register.html')" tappable>
+                    Register
+                    </ons-list-item>
+
+                <ons-list-item onclick="fn.load('Contact.html')" tappable>
+                Contact
+                </ons-list-item>
+                <ons-list-item onclick="fn.load('about.html')" tappable>
+                  About
+                </ons-list-item>
+              </ons-list>
+            </ons-page>
+          </ons-splitter-side>
+          <ons-splitter-content id="content" page="home.html"></ons-splitter-content>
+        </ons-splitter>
+        
+    
+          <template id="home.html">
+      <ons-page >
+        <ons-toolbar>
+   
+      <div class="right">
+        <ons-toolbar-button onclick="fn.open()">
+          <ons-icon icon="md-menu"></ons-icon>
+        </ons-toolbar-button>
+      </div>
+      <div class="center">
+        Repairman
+      </div>
+    </ons-toolbar>
+    <p style="text-align: center; opacity: 0.6; padding-top: 20px;">
+      Swipe right to open the menu!
+    </p>
+        
+          <ons-tabbar swipeable position="auto">
+            <ons-tab page="time.html" id="timetab" label="Timeline" icon="fa-clock-o" active>
+            </ons-tab>
+            <ons-tab page="new.html" label="New Pin" icon="fa-thumb-tack" active-icon="fa-thumb-tack">
+            </ons-tab>
+            <ons-tab page="map.html" label="Pin Map" icon="fa-globe" badge="7"  active-icon="fa-globe">
+            <!-- </ons-tab>
+            <ons-tab page="login.html" label="login" icon="fa-lock" active-icon="fa-lock">
+            </ons-tab> -->
+
+          </ons-tabbar>
+          <script>
+        ///------
+          </script>
+        </ons-page>
+      </template>
+
+      <template id="Contact.html">
+  <ons-page  >
+    <ons-toolbar>
+    <div class="left"><ons-back-button onclick="goBack()">Back</ons-back-button></div>
+      <div class="right">
+   
+        <ons-toolbar-button onclick="fn.open()">
+          <ons-icon icon="md-menu"></ons-icon>
+        </ons-toolbar-button>
+      </div>
+      <div class="center">
+      Contact
+      </div>
+    </ons-toolbar><br>
+    <div class="row">
+  <div class="col-md-6 col-md-offset-3" align="center">
+  <h2>Contact us</h2>
+ 
+
+                              
+                          
+<div align="left" style="padding-left: 30%;">
+<i class="fa fa-map-marker"></i>
+                                        <span>49 Sabayoi</span><br>
+                                  
+                                        <i class="fa fa-phone"></i>
+                                        <span>062-0673687</span><br>
+                                
+                                        <i class="fa fa-print"></i>
+                                        <span>062-0673687</span><br>
+                                  
+                                        <i class="fa fa-envelope-o"></i>
+                                        <span>yep.petch@gmail.com</span><br>
+                                 
+                                        <i class="fa fa-facebook"></i>
+                                        <span>yep.petch</span><br>
+</div>
+                                      
+                                
+                                     
+                                        </div>
+                            
+                          
+
+
+</div>
+<br><br><br><br><br>
+    <hr>
+    <div align="center">
+ 
+    <h2>Send us a message</h2>
+    </div>
+    
+    <br>
+    <div class="col-md-6 col-md-offset-3" >
+						<form action="contact">
+        
+            <div class="col-md-5 col-md-offset-1 contact-form-left">
+
+            <ons-input id="name" modifier="underbar" placeholder="NAME*" float></ons-input>
+            <ons-input id="email" modifier="underbar" placeholder="EMAIL*" float></ons-input>
+            <ons-input id="subject" modifier="underbar" placeholder="SUBJECT*" float></ons-input> <br>
+            <br>
+							</div>
+							<div class="col-md-5 contact-form-right text-right">
+								<textarea class="textarea" name="message" id="message" cols="30" rows="10" placeholder="MESSAGE"></textarea>
+							
+                <br>
+                <br><input type="submit"  class="btn btn-info" value="send message">
+							</div>
+       
+						
+						</form>
+			
+            </div>
+
+  </ons-page>
+</template>
+
+<template id="about.html">
+  <ons-page  >
+    <ons-toolbar>
+    <div class="left"><ons-back-button onclick="goBack()">Back</ons-back-button></div>
+    
+      <div class="right">
+ 
+        <ons-toolbar-button onclick="fn.open()">
+          <ons-icon icon="md-menu"></ons-icon>
+        </ons-toolbar-button>
+      </div>
+      <div class="center">
+        About
+      </div>
+    </ons-toolbar>
+
+  </ons-page>
+</template>
+
+<template id="pageLogin.html">
+  <ons-page  >
+    <ons-toolbar>
+    <div class="left"><ons-back-button onclick="goBack()">Back</ons-back-button></div>
+    
+      <div class="right">
+ 
+        <ons-toolbar-button onclick="fn.open()">
+          <ons-icon icon="md-menu"></ons-icon>
+        </ons-toolbar-button>
+      </div>
+      <div class="center">
+        Login
+      </div>
+    </ons-toolbar>
+    <div class="center">
+     </div>
+   </ons-toolbar>
+   <div style="text-align: center; margin-top: 30px;" class="col-md-6 col-md-offset-3" >
+     <div align="center">
+     
+     <p>
+        <ons-input id="email" modifier="underbar" placeholder="email" float></ons-input>
+      </p>
+      <p >
+        <ons-input id="password" modifier="underbar" type="password" placeholder="Password" float></ons-input>
+        </p>
+     </div>
+
+        <br>
+
+
+        <div  style="padding-left: 20%;">
+        <a > Forgotten account? </a>	
+        </div>
+      
+
+  
+     
+      <p style="margin-top: 30px;" align="center">
+      <input type="Submit" name="Login" onclick="loginWithEmail" class="btn btn-info">
+      </p>
+
+      <hr>
+
+      <button class="loginBtn loginBtn--facebook">
+Login with Facebook&nbsp;
+</button>
+
+<button class="loginBtn loginBtn--google">
+Login with Google&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
+</button>
+<br><br><br><center>
+<button class="loginBtn loginBtn--page" onclick="fn.load('register.html')">
+Register&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
+</button><center>
+    </div>
+  </ons-page>
+</template>
+
+
+
+
+<template id="register.html">
+  <ons-page  >
+    <ons-toolbar>
+    <div class="left"><ons-back-button onclick="goBack()">Back</ons-back-button></div>
+    
+      <div class="right">
+ 
+        <ons-toolbar-button onclick="fn.open()">
+          <ons-icon icon="md-menu"></ons-icon>
+        </ons-toolbar-button>
+      </div>
+      <div class="center">
+        Register
+      </div>
+    </ons-toolbar>
+    <div align="center">
+     
+      <p>
+         <ons-input id="Email" modifier="underbar" placeholder="Email" float></ons-input>
+       </p>
+       <p >
+         <ons-input id="Password" modifier="underbar" type="password" placeholder="Password" float></ons-input>
+         </p>
+
+         <center>
+          <button class="loginBtn loginBtn--page" onclick="handSignUp()">
+          Register&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
+          </button><center>
+      </div>
+
+  </ons-page>
+</template>
+
+
+
+<script>
+    
+function getMapLocation() {
+
+navigator.geolocation.getCurrentPosition
+(onMapSuccess, onMapError, { enableHighAccuracy: true });
+}
+
+// Success callback for get geo coordinates 
+
+function onSuccess(position) {
+var element = document.getElementById('geolocation');
+element.innerHTML = 'lat:' + position.coords.latitude      + ',' +
+             'lng:' + position.coords.longitude     + '';
+}
+
+// onError Callback receives a PositionError object 
+// 
+function onError(error) {
+alert('code: '    + error.code    + '\n' +
+'message: ' + error.message + '\n');
+}
+
+// Options: throw an error if no update is received every 30 seconds. 
+// 
+var watchID = navigator.geolocation.watchPosition(onSuccess, onError, { timeout: 30000 });
+
+</script>
+
+        <template id="time.html">
+          <ons-page id="time">
+            <div id="pins" align="center">
+            <h1>Welcome</h1>
+               <input type="search" value="" placeholder="Search" class="search-input" style="width: 280px;">
+              
+              
+          
+                
+               
+               <div>
+                  <!-- <p id="geolocation"></p> -->
+<div style="width:80%; margin: 15px; "  align="center">
+<table  align="center" style=" border-collapse: collapse;
+    border: 0px solid black; ">
+   <!-- --------------------------------------------------------------- -->
+   <!-- onclick="document.location = 'contact.html';" -->
+    <tr>
+    <td   align="center" style="padding: 1.5%; "  onclick="fn.load('test.html') ">
+    <img  style="padding	: 5px; " src="http://cdn0.tops.co.th/productimages/zpimage/8850329145119.jpg" class="img-thumbnail">
+    <br><center>หจก.อู่นาคาการช่าง</center>
+    </td>
+    <td align="center" style="padding: 1.5%; "  onclick="fn.load('test2.html') ">
+         
+    <img style="padding	: 5px; " src="http://cdn0.tops.co.th/productimages/zpimage/8850329145119.jpg" class="img-thumbnail">
+    <br><center>Test2</center>
+    </td>
+    <td align="center" style="padding: 1.5%; " onclick="fn.load('test3.html') ">
+    <img style="padding	: 5px; " src="http://cdn0.tops.co.th/productimages/zpimage/8850329145119.jpg" class="img-thumbnail">
+    <br><center>Test3</center> 
+    </td>
+    </tr>
+    <!-- --------------------------------------------------------------- -->
+
+</table>
+
+</div>
+
+
+            </div>
+
+          </ons-page>
+     
+        </template>
+
+
+
+        <template id="time2.html">
+          <ons-page id="time2">
+            <div id="pins" align="center">
+            <h1>t2</h1>
+               <input type="search" value="" placeholder="Search" class="search-input" style="width: 280px;">
+               </div>
+
+
+
+          </ons-page>
+     
+        </template>
+
+
+
+
+
+
+
+
+
+        
+        <template id="new.html">
+          <ons-page id="new">
+            <p style="text-align: center;">
+              This is the second page.
+            </p>
+          </ons-page>
+        </template> 
+         
+        <template id="map.html">
+          <ons-page id="map">
+            <p style="text-align: center;">
+              This is the second page.
+            </p>
+          </ons-page>
+        </template>
+
+                 
+        <!-- <template id="login.html">
+          <ons-page id="login">
+          <div style="text-align: center; margin-top: 30px;" class="col-md-6 col-md-offset-3" >
+         <div align="center">
+         <h1>Login</h1><br>
+         <p>
+            <ons-input id="username" modifier="underbar" placeholder="Username" float></ons-input>
+          </p>
+          <p >
+            <ons-input id="password" modifier="underbar" type="password" placeholder="Password" float></ons-input>
+            </p>
+         </div>
+
+            <br>
+
+
+            <div  style="padding-left: 20%;">
+            <a > Forgotten account? </a>	
+            </div>
+          
+
+      
+         
+          <p style="margin-top: 30px;" align="center">
+          <input type="Submit" name="Login"  class="btn btn-info">
+          </p>
+
+          <hr>
+
+          <button class="loginBtn loginBtn--facebook">
+  Login with Facebook&nbsp;
+</button>
+
+<button class="loginBtn loginBtn--google">
+  Login with Google&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
+</button>
+<br><br><br><center>
+<button class="loginBtn loginBtn--page">
+  Register&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
+</button><center>
+        </div>
+          </ons-page>
+        </template>   -->
+
+  <!-- ตาราง -->
+  <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+ 
+      #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+    </style>
+     <script>
+ 
+
+var map, startInput, endInput;
+
+function initMap() {
+
+startInput = document.getElementById('start');
+endInput = document.getElementById('end');
+
+var directionsService = new google.maps.DirectionsService;
+var directionsDisplay = new google.maps.DirectionsRenderer;
+var map = new google.maps.Map(document.getElementById('map'), {
+  center:startInput,
+  zoom: 1,
+ 
+});
+
+directionsDisplay.setMap(map);
+var onChangeHandler = function() {
+  calculateAndDisplayRoute(directionsService, directionsDisplay);
+};
+document.getElementById('start').addEventListener('change', onChangeHandler);
+document.getElementById('end').addEventListener('change', onChangeHandler);
+document.getElementById('increment').addEventListener('click', function() {
+  var endInputParts = endInput.value.split(',');
+  if (endInputParts.length > 1) {
+    endInputParts[0] = parseFloat(endInputParts[0]) + 0;
+    endInput.value = endInputParts.join(',');
+    onChangeHandler();
+  }
+});
+}
+
+function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+var startParts = startInput.value.split(',');
+var endParts = endInput.value.split(',');
+if (startParts.length > 1 && endParts.length > 1) {
+  var origin = new google.maps.LatLng(startParts[0], startParts[1]);
+  var destination = new google.maps.LatLng(endParts[0], endParts[1]);
+  directionsService.route({
+    origin: origin,
+    destination: destination,
+    travelMode: 'DRIVING'
+  }, function(response, status) {
+    if (status === 'OK') {
+      directionsDisplay.setDirections(response);
+    } else {
+      window.alert('Directions request failed due to ' + status);
+    }
+  });
+}
+}
+/*
+* use google maps api built-in mechanism to attach dom events
+*/
+google.maps.event.addDomListener(window, "load", initMap);
+function myHideShow() {
+  var x = document.getElementById("myDIV");
+  if (x.style.display == "block") {
+    
+                x.style.display = "none";
+              
+            }
+            else {
+    
+                x.style.display = "block";
+               
+            }
+}
+  </script>
+  <template id="test.html">
+     
+  <ons-page  >
+    <ons-toolbar>
+    <div class="left"><ons-back-button onclick="goBack()">Back</ons-back-button></div>
+    
+      <div class="right">
+ 
+        <ons-toolbar-button onclick="fn.open()">
+          <ons-icon icon="md-menu"></ons-icon>
+        </ons-toolbar-button>
+      </div>
+      <div class="center">
+       Test
+      </div>
+    </ons-toolbar>
+   
+ </head>
+ <body>
+     <script async defer
+     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlSeq3D-msn4ACXt7lmQVPD23f9Ni8g8E&callback=initMap">
+     </script>
+     <div id="map" style="height: 300px;"></div> 
+     <input id="start" type="hidden" value="7.894701, 98.352296" />
+     <input id="end" type="hidden"  value="7.883297, 98.361636" />
+     <button id="increment" > Show location</button>
+              <!-- --------------------------------------- -->
+    <!-- <div id="floating-panel">
+       
+      
+              <input id="start" type="hidden" name="nowLoaction" value="7.894701, 98.352296">
+             
+
+       
+        <b>End: </b>
+
+
+        </div> -->
+        <!-- <div id="map" style="width:100%;height:50%"></div>
+      
+        <select id="end" >
+          
+            <option value="7.883297, 98.361636" >หจก.อู่นาคาการช่าง
+            </option>
+            <option selected value="7.883137, 98.364769">กระจ่าง การช่าง</option>
+            <option value="7.882229, 98.364064">หจก.ภูเก็ตนาคา อะไหล่</option> 
+    
+          </select> -->
+
+     
+            <!-- <tr id="end">
+              <td>7.883297, 98.361636</td>
+              <td><img value="7.883297, 98.361636" src="data:image/jpeg;base64,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" alt=""></td>
+              <td>หจก.อู่นาคาการช่าง</td>
+              <td> <a href="tel:+660620673687"><img src="https://cdn.pixabay.com/photo/2016/06/06/16/39/phone-1439842_960_720.png" width="50px"></a>0688888888</td>
+            </tr>
+            <tr >
+              <td><img src="" alt=""></td>
+              <td>กระจ่าง การช่าง</td>
+              <td> <a href="tel:+660620673687"><img src="https://cdn.pixabay.com/photo/2016/06/06/16/39/phone-1439842_960_720.png" width="50px"></a>0688888888</td>
+            </tr>
+            <tr>
+                <td><img src="" alt=""></td>
+                <td>หจก.ภูเก็ตนาคา อะไหล่</td>
+                <td> <a href="tel:+660620673687"><img src="https://cdn.pixabay.com/photo/2016/06/06/16/39/phone-1439842_960_720.png" width="50px"></a>0688888888</td>
+              </tr>
+            
+                    </table> -->
+        
+        
+        
+   
+  </ons-page>
+</template>
+
+<template id="test2.html">
+    
+ <ons-page  >
+   <ons-toolbar>
+   <div class="left"><ons-back-button onclick="goBack()">Back</ons-back-button></div>
+   
+     <div class="right">
+
+       <ons-toolbar-button onclick="fn.open()">
+         <ons-icon icon="md-menu"></ons-icon>
+       </ons-toolbar-button>
+     </div>
+     <div class="center">
+      Test
+     </div>
+   </ons-toolbar>
+  
+</head>
+<body>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlSeq3D-msn4ACXt7lmQVPD23f9Ni8g8E&callback=initMap">
+    </script>
+
+      <div >
+          <div id="map"style="height: 300px;"></div> 
+        </div> 
+       
+
+ 
+    
+    <input id="start" type="hidden" value="7.894701, 98.352296" />
+    <input id="end" type="hidden" value="7.883297, 98.361636" />
+    <button id="increment"  >Show location</button>
+ 
+ </ons-page>
+</template>
+
+<template id="test3.html">
+    
+ <ons-page  >
+   <ons-toolbar>
+   <div class="left"><ons-back-button onclick="goBack()">Back</ons-back-button></div>
+   
+     <div class="right">
+
+       <ons-toolbar-button onclick="fn.open()">
+         <ons-icon icon="md-menu"></ons-icon>
+       </ons-toolbar-button>
+     </div>
+     <div class="center">
+      Test
+     </div>
+   </ons-toolbar>
+  
+</head>
+<body>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlSeq3D-msn4ACXt7lmQVPD23f9Ni8g8E&callback=initMap">
+    </script>
+
+      <div >
+          <div id="map"style="height: 300px;"></div> 
+        </div> 
+       
+
+ 
+    
+    <input id="start" type="hidden" value="7.894701, 98.352296" />
+    <input id="end" type="hidden"  value="7.882229, 98.364064" />
+    <button id="increment"  > Show location</button>
+ 
+ </ons-page>
+</template>
+ <!-- ตาราง -->
+
+ 
+
+ 
+ 
+
+ <script type="text/javascript" src="cordova.js"></script>
+ <script type="text/javascript" src="js/index.js"></script>
+
+ 
+ <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
+ <script>
+
+
+
+     function myFunction() {
+document.getElementById("demo").innerHTML = "Hello World";
+}
+
+   // Initialize Firebase
+   var config = {
+     apiKey: "AIzaSyBvbVfCeSUHx4Nag-D5tTMlRjKoh0lWzxU",
+     authDomain: "repairman-d41d3.firebaseapp.com",
+     databaseURL: "https://repairman-d41d3.firebaseio.com",
+     projectId: "repairman-d41d3",
+     storageBucket: "repairman-d41d3.appspot.com",
+     messagingSenderId: "375106619571"
+   };
+
+   firebase.initializeApp(config); 
+
+
+var provider = new firebase.auth.FacebookAuthProvider();
+function loginFacebook(){
+firebase.auth().signInWithPopup(provider).then(function(result) {
+//  console.log(result);
+
+}).catch(function(error) {
+ //Do something when error
+ console.log(error);
+
+});
+}
+</script>
+
+</body>
+</html>
